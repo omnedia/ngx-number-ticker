@@ -1,0 +1,25 @@
+{
+  "name": "@omnedia/ngx-number-ticker",
+  "description": "A simple number ticker effect to animate counting.",
+  "version": "1.0.0",
+  "peerDependencies": {
+    "@angular/common": "^18.2.0",
+    "@angular/core": "^18.2.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false,
+  "keywords": [
+    "npm",
+    "number",
+    "ticker",
+    "counting",
+    "animation"
+  ],
+  "repository": {
+    "url": "https://github.com/omnedia/ngx-number-ticker"
+  },
+  "author": "Markus Block (markus.block@omnedia.com)",
+  "license": "MIT"
+}
