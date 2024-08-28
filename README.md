@@ -49,12 +49,14 @@ Use the component in your template:
 <om-number-ticker
   [countTo]="countTo"
   [countDuration]="countDuration"
+  [transformFunction]="transformFunction"
   styleClass="your-custom-class"
 ></om-number-ticker>
 ```
 
 - `countTo` (required): The target number to which the ticker will count up or down.
 - `countDuration` (optional): The duration of the counting animation in milliseconds. Defaults to 2000ms.
+- `transformFunction` (optional): Callback-Function to modify the displayed number. E.g. formatting it to toLocaleString()
 - `styleClass` (optional): A custom CSS class to apply to the number ticker for additional styling.
 
 ## Example

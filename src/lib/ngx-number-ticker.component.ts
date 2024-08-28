@@ -20,7 +20,11 @@ export class NgxNumberTickerComponent {
   @Input("countDuration")
   private countDuration = 2000;
 
+  @Input("transformFunction")
+  transformFunction?: (number: number) => string;
+
   currentNumber = 0;
+  displayNumber = "0";
 
   private countToNumber(number: number): void {
     if (number > this.currentNumber) {
@@ -39,6 +43,15 @@ export class NgxNumberTickerComponent {
   private countDown(target: number): void {
     const direction = "down";
     this.executeCount(target, direction);
+  }
+
+  setCountValue(): void {
+    if (!this.transformFunction) {
+      this.displayNumber = `${this.currentNumber}`;
+      return;
+    }
+
+    this.displayNumber = this.transformFunction(this.currentNumber);
   }
 
   private executeCount(target: number, direction: "up" | "down"): void {
@@ -68,9 +81,11 @@ export class NgxNumberTickerComponent {
         );
 
         if (elapsed < slowCountingDuration) {
+          this.setCountValue();
           requestAnimationFrame(updateSmallDifference);
         } else {
           this.currentNumber = target; // Ensure final number is set
+          this.setCountValue();
         }
       };
 
@@ -102,9 +117,11 @@ export class NgxNumberTickerComponent {
           );
 
           if (elapsed < mainCountingDuration) {
+            this.setCountValue();
             requestAnimationFrame(update);
           } else {
             this.currentNumber = last10Start;
+            this.setCountValue();
             requestAnimationFrame(update);
           }
         } else {
@@ -125,9 +142,11 @@ export class NgxNumberTickerComponent {
           );
 
           if (elapsedForLast10 < last10DigitsDuration) {
+            this.setCountValue();
             requestAnimationFrame(update);
           } else {
             this.currentNumber = target; // Ensure final number is set
+            this.setCountValue();
           }
         }
       };
