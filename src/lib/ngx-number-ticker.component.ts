@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, Input } from "@angular/core";
+import { ChangeDetectorRef, Component, Input } from "@angular/core";
 
 @Component({
   selector: "om-number-ticker",
@@ -26,6 +26,8 @@ export class NgxNumberTickerComponent {
   currentNumber = 0;
   displayNumber = "0";
 
+  constructor(private cdr: ChangeDetectorRef) {}
+
   private countToNumber(number: number): void {
     if (number > this.currentNumber) {
       this.countUp(number);
@@ -48,10 +50,11 @@ export class NgxNumberTickerComponent {
   setCountValue(): void {
     if (!this.transformFunction) {
       this.displayNumber = `${this.currentNumber}`;
-      return;
+    } else {
+      this.displayNumber = this.transformFunction(this.currentNumber);
     }
 
-    this.displayNumber = this.transformFunction(this.currentNumber);
+    this.cdr.markForCheck();
   }
 
   private executeCount(target: number, direction: "up" | "down"): void {
@@ -77,7 +80,7 @@ export class NgxNumberTickerComponent {
           startNumber,
           target,
           easedPercent,
-          direction
+          direction,
         );
 
         if (elapsed < slowCountingDuration) {
@@ -113,7 +116,7 @@ export class NgxNumberTickerComponent {
             startNumber,
             last10Start,
             percentComplete,
-            direction
+            direction,
           );
 
           if (elapsed < mainCountingDuration) {
@@ -129,7 +132,7 @@ export class NgxNumberTickerComponent {
           const elapsedForLast10 = elapsed - mainCountingDuration;
           const percentComplete = Math.min(
             elapsedForLast10 / last10DigitsDuration,
-            1
+            1,
           );
           const easedPercent = this.easeOutQuad(percentComplete);
 
@@ -138,7 +141,7 @@ export class NgxNumberTickerComponent {
             last10Start,
             target,
             easedPercent,
-            direction
+            direction,
           );
 
           if (elapsedForLast10 < last10DigitsDuration) {
@@ -160,7 +163,7 @@ export class NgxNumberTickerComponent {
     start: number,
     end: number,
     percent: number,
-    direction: "up" | "down"
+    direction: "up" | "down",
   ): number {
     if (direction === "up") {
       return Math.floor(start + (end - start) * percent);
