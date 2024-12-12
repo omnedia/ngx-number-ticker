@@ -1,5 +1,13 @@
 # ngx-number-ticker
 
+<a href="https://ngxui.com" target="_blank" style="display: flex;gap: .5rem;align-items: center;cursor: pointer; padding: 0 0 0 0; height: fit-content;">
+  <img src="https://ngxui.com/assets/img/ngxui-logo.png" style="width: 64px;height: 64px;">
+  <p style="font-weight: bold; padding: 0; margin: 0; font-size: 4rem">NGXUI</p>
+</a>
+
+This Library is part of the NGXUI ecosystem. <br>
+View all available components at https://ngxui.com
+
 `@omnedia/ngx-number-ticker` is an Angular library that provides a smooth animated number ticker. The component allows you to animate the counting of a number from its current state to a target value with customizable animation duration. This is perfect for dynamically displaying changing values such as counters, stats, or any number-based data in your Angular application.
 
 ## Features
@@ -21,21 +29,23 @@ npm install @omnedia/ngx-number-ticker
 Import the `NgxNumberTickerComponent` in your Angular module or component:
 
 ```typescript
-import { NgxNumberTickerComponent } from '@omnedia/ngx-number-ticker';
+import {NgxNumberTickerComponent} from '@omnedia/ngx-number-ticker';
 
 @Component({
   ...
-  imports: [
-    ...
-    NgxNumberTickerComponent,
-  ],
+    imports:
+[
   ...
+    NgxNumberTickerComponent,
+],
+...
 })
 ```
 
 Use the component in your template:
 
 ```html
+
 <om-number-ticker
   [countTo]="1000"
   [countDuration]="2000"
@@ -46,6 +56,7 @@ Use the component in your template:
 ## API
 
 ```html
+
 <om-number-ticker
   [countTo]="countTo"
   [countDuration]="countDuration"
@@ -62,6 +73,7 @@ Use the component in your template:
 ## Example
 
 ```html
+
 <om-number-ticker
   [countTo]="5000"
   [countDuration]="3000"
