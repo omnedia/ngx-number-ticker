@@ -1,5 +1,5 @@
-import { CommonModule } from "@angular/common";
-import { ChangeDetectorRef, Component, Input } from "@angular/core";
+import {CommonModule} from "@angular/common";
+import {ChangeDetectorRef, Component, Input} from "@angular/core";
 
 @Component({
   selector: "om-number-ticker",
@@ -18,7 +18,7 @@ export class NgxNumberTickerComponent {
   }
 
   @Input("countDuration")
-  private countDuration = 2000;
+  countDuration = 2000;
 
   @Input("transformFunction")
   transformFunction?: (number: number) => string;
@@ -26,7 +26,8 @@ export class NgxNumberTickerComponent {
   currentNumber = 0;
   displayNumber = "0";
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef) {
+  }
 
   private countToNumber(number: number): void {
     if (number > this.currentNumber) {
