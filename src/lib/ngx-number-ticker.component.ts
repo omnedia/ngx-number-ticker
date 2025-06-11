@@ -14,17 +14,31 @@ export class NgxNumberTickerComponent {
 
   @Input("countTo")
   set countTo(number: number) {
+    this.targetNumber = number;
     this.countToNumber(number);
   }
 
   @Input("countDuration")
-  countDuration = 2000;
+  set countDuration(countDuration: number) {
+    this.countDurationValue = countDuration;
+
+    if (this.frameId) {
+      cancelAnimationFrame(this.frameId);
+      this.frameId = undefined;
+      this.countToNumber(this.targetNumber);
+    }
+  }
+
+  countDurationValue = 2000;
 
   @Input("transformFunction")
   transformFunction?: (number: number) => string;
 
+  targetNumber = 0;
   currentNumber = 0;
   displayNumber = "0";
+
+  private frameId?: number;
 
   constructor(private cdr: ChangeDetectorRef) {
   }
@@ -64,7 +78,7 @@ export class NgxNumberTickerComponent {
 
     // Check if we have fewer than 10 digits to count
     const isSmallDifference = difference <= 10;
-    const duration = this.countDuration;
+    const duration = this.countDurationValue;
 
     // If the difference is small, handle all of them in the easing phase
     if (isSmallDifference) {
@@ -86,14 +100,14 @@ export class NgxNumberTickerComponent {
 
         if (elapsed < slowCountingDuration) {
           this.setCountValue();
-          requestAnimationFrame(updateSmallDifference);
+          this.frameId = requestAnimationFrame(updateSmallDifference);
         } else {
           this.currentNumber = target; // Ensure final number is set
           this.setCountValue();
         }
       };
 
-      requestAnimationFrame(updateSmallDifference);
+      this.frameId = requestAnimationFrame(updateSmallDifference);
     } else {
       // Normal case: Handle large differences with two phases
       const last10DigitsDuration = 1000; // 1 second for the last 10 digits
@@ -122,11 +136,11 @@ export class NgxNumberTickerComponent {
 
           if (elapsed < mainCountingDuration) {
             this.setCountValue();
-            requestAnimationFrame(update);
+            this.frameId = requestAnimationFrame(update);
           } else {
             this.currentNumber = last10Start;
             this.setCountValue();
-            requestAnimationFrame(update);
+            this.frameId = requestAnimationFrame(update);
           }
         } else {
           // Phase 2: Slow down for the last 10 digits
@@ -147,7 +161,7 @@ export class NgxNumberTickerComponent {
 
           if (elapsedForLast10 < last10DigitsDuration) {
             this.setCountValue();
-            requestAnimationFrame(update);
+            this.frameId = requestAnimationFrame(update);
           } else {
             this.currentNumber = target; // Ensure final number is set
             this.setCountValue();
@@ -155,7 +169,7 @@ export class NgxNumberTickerComponent {
         }
       };
 
-      requestAnimationFrame(update);
+      this.frameId = requestAnimationFrame(update);
     }
   }
 
