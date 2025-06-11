@@ -1,5 +1,5 @@
 import {CommonModule} from "@angular/common";
-import {ChangeDetectorRef, Component, Input} from "@angular/core";
+import {ChangeDetectionStrategy, Component, Input, signal} from "@angular/core";
 
 @Component({
   selector: "om-number-ticker",
@@ -7,6 +7,7 @@ import {ChangeDetectorRef, Component, Input} from "@angular/core";
   imports: [CommonModule],
   templateUrl: "./ngx-number-ticker.component.html",
   styleUrl: "./ngx-number-ticker.component.scss",
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NgxNumberTickerComponent {
   @Input("styleClass")
@@ -36,12 +37,9 @@ export class NgxNumberTickerComponent {
 
   targetNumber = 0;
   currentNumber = 0;
-  displayNumber = "0";
+  displayNumber = signal("0");
 
   private frameId?: number;
-
-  constructor(private cdr: ChangeDetectorRef) {
-  }
 
   private countToNumber(number: number): void {
     if (number > this.currentNumber) {
@@ -64,12 +62,10 @@ export class NgxNumberTickerComponent {
 
   setCountValue(): void {
     if (!this.transformFunction) {
-      this.displayNumber = `${this.currentNumber}`;
+      this.displayNumber.set(`${this.currentNumber}`);
     } else {
-      this.displayNumber = this.transformFunction(this.currentNumber);
+      this.displayNumber.set(this.transformFunction(this.currentNumber));
     }
-
-    this.cdr.markForCheck();
   }
 
   private executeCount(target: number, direction: "up" | "down"): void {
